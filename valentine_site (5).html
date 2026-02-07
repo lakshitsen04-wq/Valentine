@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Will You Be My Valentine? ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#ff4f81;--pink2:#ff85a2;--rose:#ff2e63;--bg1:#ffdde1;--bg2:#ee9ca7;--white:#ffffff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;min-height:100vh;overflow-x:hidden;background:linear-gradient(135deg,var(--bg1),var(--bg2)), url('https://drive.google.com/uc?export=view&id=1kfsUNc08iaMHvUMDSzUZaA4ODP3BYwN1') center/cover no-repeat fixed;display:flex;align-items:center;justify-content:center}
+.heart{position:fixed;bottom:-20px;color:#fff;opacity:.7;animation:floatUp linear forwards}
+@keyframes floatUp{to{transform:translateY(-110vh) rotate(360deg);opacity:0}}
+.container{text-align:center;padding:30px 20px 40px;max-width:650px;border-radius:28px;background:rgba(255,255,255,0.18);backdrop-filter:blur(12px);box-shadow:0 10px 40px rgba(0,0,0,.25);animation:fadeIn 1.4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+h1{font-family:'Great Vibes',cursive;font-size:56px;color:#fff;text-shadow:0 4px 18px rgba(0,0,0,.25)}
+h2{margin-top:10px;color:#fff;font-weight:600}
+.message{margin-top:18px;color:#fff;font-size:18px;line-height:1.6}
+.photo{width:170px;height:170px;border-radius:50%;margin:22px auto;background:url('https://drive.google.com/uc?export=view&id=1kfsUNc08iaMHvUMDSzUZaA4ODP3BYwN1') center/cover no-repeat;border:5px solid rgba(255,255,255,.7);box-shadow:0 8px 25px rgba(0,0,0,.35);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.buttons{margin-top:15px;position:relative;height:120px}
+button{border:none;cursor:pointer;font-size:20px;font-weight:700;padding:14px 26px;border-radius:40px;transition:.25s}
+#yesBtn{background:var(--rose);color:white;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+#yesBtn:hover{transform:scale(1.15);background:#ff174f}
+#noBtn{position:absolute;left:60%;top:45%;background:white;color:#ff2e63;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+.footer{margin-top:22px;color:white;font-size:14px;opacity:.85}
+#celebration{display:none;position:fixed;inset:0;background:linear-gradient(135deg,#ff2e63,#ff85a2);z-index:5;align-items:center;justify-content:center;text-align:center;color:white;flex-direction:column;padding:30px}
+#celebration h1{font-size:70px}
+#celebration p{margin-top:18px;font-size:22px;max-width:600px}
+canvas{position:fixed;inset:0;pointer-events:none;z-index:4}
+.music{margin-top:14px;font-size:14px;color:white;opacity:.85}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<div class="container">
+  <h1 id="title">Yoshika, will you be my Valentine?</h1>
+  <h2 id="herName">Dear My Love ❤️</h2>
+  <div class="photo"></div>
+  <p class="message">From the moment you came into my life, every day became brighter, every smile became real, and every heartbeat started whispering your name.<br><br>I don't want just one Valentine's Day with you... I want every Valentine's Day of my life with you.</p>
+  <div class="buttons">
+    <button id="yesBtn">YES 💖</button>
+    <button id="noBtn">No 🙈</button>
+  </div>
+  <div class="footer">Made with love by <span id="yourName">Your Name</span></div>
+  <div class="music">(Optional: you can add your song inside the code)</div>
+</div>
+<div id="celebration">
+  <h1>She Said YES!!! 💍❤️</h1>
+  <p id="finalMsg">This is the beginning of our forever.</p>
+</div>
+<script>
+/* ========== CUSTOMIZE HERE ========== */
+const GIRLFRIEND_NAME = "Yoshika";
+const YOUR_NAME = "Lakshit";
+const FINAL_MESSAGE = "I promise to love you Pendu, annoy you, protect you, and stand with you forever. Happy Valentine's Day ❤️";
+/* =================================== */
+
+document.getElementById("herName").innerText = `Dear ${GIRLFRIEND_NAME} ❤️`;
+document.getElementById("yourName").innerText = YOUR_NAME;
+document.getElementById("finalMsg").innerText = FINAL_MESSAGE;
+
+/* floating hearts generator */
+setInterval(()=>{
+  const h=document.createElement('div');
+  h.className='heart';
+  h.innerHTML='❤';
+  h.style.left=Math.random()*100+'vw';
+  h.style.fontSize=(12+Math.random()*30)+'px';
+  h.style.animationDuration=(4+Math.random()*6)+'s';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),9000);
+},300);
+
+/* NO button runs away */
+const noBtn=document.getElementById('noBtn');
+let scale=1;
+noBtn.addEventListener('mouseenter',moveNo);
+noBtn.addEventListener('click',moveNo);
+
+function moveNo(){
+  const x=Math.random()*80;
+  const y=Math.random()*80;
+  noBtn.style.left=x+'%';
+  noBtn.style.top=y+'%';
+  scale+=0.08;
+  document.getElementById('yesBtn').style.transform = `scale(${scale})`;
+}
+
+/* mobile touch support */
+document.addEventListener("touchstart", function(e){
+  if(e.target && e.target.id === "noBtn") moveNo();
+});
+
+/* YES button celebration */
+document.getElementById('yesBtn').onclick=()=>{
+  document.getElementById('celebration').style.display='flex';
+  startConfetti();
+  // after 3 seconds open WhatsApp message
+  setTimeout(()=>{
+    const phone = "91XXXXXXXXXX"; // <-- put your WhatsApp number with country code
+    const text = encodeURIComponent("I said YES ❤️");
+    window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+  },3000);
+}
+
+/* simple confetti */
+const canvas=document.getElementById('confetti');
+const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+window.onresize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+let pieces=[];
+
+function startConfetti(){
+  pieces=[];
+  for(let i=0;i<160;i++){
+    pieces.push({
+      x:Math.random()*canvas.width,
+      y:Math.random()*canvas.height- canvas.height,
+      r:Math.random()*6+4,
+      d:Math.random()*160,
+      color:`hsl(${Math.random()*360},100%,60%)`,
+      tilt:Math.random()*10-10
+    });
+  }
+  requestAnimationFrame(update);
+}
+
+function update(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  pieces.forEach(p=>{ ctx.fillStyle=p.color; ctx.fillRect(p.x,p.y,p.r,p.r); });
+  fall();
+  requestAnimationFrame(update);
+}
+
+function fall(){
+  pieces.forEach(p=>{ p.y+=2; p.x+=Math.sin(p.d); if(p.y>canvas.height){p.y=-10} });
+}
+</script>
+</body>
+</html>
